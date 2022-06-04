@@ -190,7 +190,7 @@ function createLights() {
 import handleText from './textanimations'
 
 const png = new Image();
-png.src = "images/favicon.png"
+png.src = "images/ngomngom.png"
 
 window.addEventListener('load', (event) => {
 	console.log('page has loaded');

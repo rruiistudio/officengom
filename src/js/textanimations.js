@@ -45,38 +45,36 @@ export default function handleText(png) {
 			}
 
 			update() {
-				ctx.fillStyle = this.color;
 				let dx = mouse.x - this.x;
 				let dy = mouse.y - this.y;
 				let distance = Math.sqrt(dx * dx + dy * dy);
-
 				let forceDirectionX = dx / distance;
 				let forceDirectionY = dy / distance;
-
-				const maxDistance = 100;
-
-				let force = (maxDistance - distance) / maxDistance;
-				if (force < 0) force = 0;
-
-				let directionX = (forceDirectionX * force * this.density * 0.6);
-				let directionY = (forceDirectionY * force * this.density * 0.6);
-
-				if (distance < mouse.radius + this.size) {
+				let maxDistance = mouse.radius * 1.2;
+				let force = (maxDistance - distance) / maxDistance * 1.1;
+	
+				let directionX = forceDirectionX * force * this.density;
+				let directionY = forceDirectionY * force * this.density;
+	
+	
+				if (distance < mouse.radius) {
 					this.x -= directionX;
 					this.y -= directionY;
 				} else {
 					if (this.x !== this.baseX) {
 						let dx = this.x - this.baseX;
-						this.x -= dx/20;
+						this.x -= dx / 10;
 					}
+	
 					if (this.y !== this.baseY) {
 						let dy = this.y - this.baseY;
-						this.y -= dy/20;
+						this.y -= dy / 10;
 					}
 				}
 				this.draw();
 			}
 		}
+
 
 		function init() {
 			particleArray = [];
@@ -90,6 +88,10 @@ export default function handleText(png) {
 					}
 				}
 			}
+
+			const everyNth = (arr, nth) => arr.filter((e, i) => i % nth === nth - 1);
+	
+			particleArray = everyNth(particleArray, 3)
 
 		}
 
