@@ -13,7 +13,7 @@ global.THREE = THREE;
 let scene, camera, renderer, controls
 
 let updateBG = new THREE.Color(0x131218)
-let initBG = new THREE.Color(0xFFFFFF)
+let initBG = new THREE.Color(0xF9F9F9)
 
 const gltfLoader = new GLTFLoader()
 //const animMixer = new AnimationMixer()
@@ -51,6 +51,7 @@ window.addEventListener('resize', onWindowResize, false);
 function init() {
 	createScene()
 	createLights()
+	createFollower()
 	blob = createBlobs(blob, MAT.glass, scene)
 }
 
@@ -96,46 +97,6 @@ function onDocumentScrollMove(event) {
 
 import { createBlobs } from './geometries'
 
-
-// FONT 
-
-/*
-const createText = require('three-bmfont-text')
-var MSDFShader = require('./msdf')
-
-import font from '../font/roboto.json'
-import fontTexture from '../font/roboto.png'
-
-new THREE.TextureLoader().load(fontTexture)
-
-
-function createGlyph () {
-
-	var geom = createText({
-	  text: 'Hello',
-	  font: font,
-	  align: 'center',
-	  flipY: fontTexture.flipY
-	})
-
-	var material = new THREE.RawShaderMaterial(MSDFShader({
-	  map: fontTexture,
-	  color: 0x4000FF
-	}))
-
-	var layout = geom.layout
-	var text = new THREE.Mesh(geom, material)
-	text.position.set(0, -layout.descender + layout.height, 0)
-	text.scale.set(50, 50, 50)
-
-	var textAnchor = new THREE.Object3D()
-	textAnchor.add(text)
-	scene.add(textAnchor)
-  }
-
-  createGlyph()
-*/
-
 // ANIMATIONS
 
 import { constantRotation, mouseOrbit } from './animations'
@@ -152,6 +113,38 @@ function animate() {
 
 	renderer.render(scene, camera);
 };
+
+//MOUSE-FOLLOWER SPHERE
+
+function createFollower() {
+	var mouse = {x: 0, y: 0};
+	var mouseSphere = new THREE.SphereGeometry(0.4, 60, 60);
+	var mouseObject = new THREE.Mesh(mouseSphere, MAT.default);
+	mouseObject.position.z = 0;
+	scene.add(mouseObject);
+
+	function sphereFollower(event) {
+		event.preventDefault();
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = - (event.clientY / window.innerHeight) * 2 + 1
+
+		// Make the sphere follow the mouse
+		var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+		vector.unproject(camera);
+		var dir = vector.sub(camera.position).normalize();
+
+		var distance = - camera.position.z / dir.z;
+		var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+		console.log(pos)
+		mouseObject.position.copy(pos);
+
+	}
+
+	document.addEventListener('mousemove', sphereFollower);
+}
+
+
+
 
 //UTILITY FUNCTIONS
 
@@ -183,12 +176,12 @@ function createScene() {
 function createLights() {
 	var ambientlight = new THREE.AmbientLight(0xFFFFFF, 0.5)
 	var d_light = new THREE.DirectionalLight(0xEE8E8E, 0.5); // directional light
-	const p_lightA = new THREE.PointLight(0xFFC300, 1.2, 100);
-	const p_lightB = new THREE.PointLight(0xF6732B, 1, 100);
-	p_lightA.position.set(0, 15, 50);
-	p_lightB.position.set(15, 0, 15);
-	//scene.add(p_lightA);
-	//scene.add(p_lightB);
+	const p_lightA = new THREE.PointLight(0xFFFFFF, 1.2, 150);
+	const p_lightB = new THREE.PointLight(0xFFFFFF, 1, 150);
+	//p_lightA.position.set(0, 15, 50);
+	//p_lightB.position.set(15, 0, 15);
+	scene.add(p_lightA);
+	scene.add(p_lightB);
 	scene.add(ambientlight);
 	scene.add(d_light);
 }
@@ -196,5 +189,11 @@ function createLights() {
 
 import handleText from './textanimations'
 
-window.addEventListener('load', handleText)
+const png = new Image();
+png.src = "images/logo.png"
+
+window.addEventListener('load', (event) => {
+	console.log('page has loaded');
+	handleText(png);
+});
 
