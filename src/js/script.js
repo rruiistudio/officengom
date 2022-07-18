@@ -81,7 +81,7 @@ let cont = document.getElementById("bkg")
 
 function onDocumentMouseMove(event) {
 
-	setTimeout(triggerTitles, 1900) // set an animation or fade here: make it more responsive 
+	//setTimeout(triggerTitles, 1900) // set an animation or fade here: make it more responsive 
 
 	mouseX = (event.clientX - windowHalfX)
 	mouseY = (event.clientY - windowHalfY)
