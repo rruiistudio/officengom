@@ -15,3 +15,15 @@ export function mouseOrbit(object, mouseX, mouseY, speed) {
     
 }
 
+/*
+export function typeWriter(txt, speed) {
+	console.log(txt)
+
+	var i = 0
+	if (i < txt.length) {
+	  document.getElementById('prompts').innerHTML += txt.charAt(i);
+	  i++;
+	  setTimeout(typeWriter, speed);
+	}
+}
+*/

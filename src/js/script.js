@@ -8,6 +8,7 @@ import darkMode from './uicontrols'
 import * as MAT from './materials'
 
 import addModels from './geometries'
+//import { typewriter } from './animations';
 global.THREE = THREE;
 
 let scene, camera, renderer, controls
@@ -46,19 +47,21 @@ window.addEventListener('resize', onWindowResize, false);
 
 //global document interaction
 //document.addEventListener('wheel', onDocumentScrollMove)
-
+var leftBlob
 
 function init() {
 	createScene()
 	createLights()
 	createFollower()
-	blob = createBlobs(blob, MAT.glass, scene)
+	//let pos = "object.position.set(0,0,-1)"
+	blob = createBlobs(blob, MAT.glass, scene, 0, 0, -1, 50, 30, 30)
 }
 
 //console.log(obj_button + 'hello')
 
 //------------------------------------------------------
 document.addEventListener('mousemove', onDocumentMouseMove)
+document.addEventListener('scroll', onDocumentScrollMove)
 
 let mouseX = 0
 let mouseY = 0
@@ -69,12 +72,38 @@ let targetY = 0
 const windowHalfX = window.innerWidth / 2;
 const windowHalfY = window.innerHeight / 2;
 
+import { triggerTitles } from './uicontrols';
+
+
+
+let cont = document.getElementById("bkg")
+//cont.addEventListener('mousemove', triggerTitles)
+
 function onDocumentMouseMove(event) {
+
+	setTimeout(triggerTitles, 1900) // set an animation or fade here: make it more responsive 
+
 	mouseX = (event.clientX - windowHalfX)
 	mouseY = (event.clientY - windowHalfY)
-
 	mouseOrbit(blob, mouseX, mouseY, 0.15)
 	mouseOrbit(obj_button, mouseX, mouseY, 0.15)
+
+}
+
+//let leftd = document.getElementById('promptsleft')
+//let rightd = document.getElementById('promptsright')
+
+// trigger blobs on mouseover
+
+//uncomment this later
+//leftd.addEventListener('mouseover', dummyfunction) 
+
+function dummyfunction() {
+	leftBlob= createBlobs(leftBlob, MAT.normalMaterial, scene, 5, -3, 0, 1.5, 40, 40)
+	console.log('blob created')
+	//leftBlob.position.set (0,0,-2)
+
+	//setTimeout(scene.remove) --> set timeout and remove blob
 }
 
 
@@ -82,13 +111,22 @@ function onDocumentScrollMove(event) {
 	//console.log('this has been scrolled')
 
 	if (event.deltaY > 0) {
-		blob.scale.x += 0.2;
+		//blob.scale.x += 0.02;
+		//blob.scale.y += 0.02;
 		console.log(event.deltaY)
 	}
 
 	else {
-		blob.scale.x -= 0.2;
+		//blob.scale.x -= 0.02;
+		//blob.scale.y -= 0.02;
+		//blob.scale.z -= 0.02;
 		console.log(event.deltaY)
+	}
+
+	if (event) {
+		//blob.position.z += 0.01
+	} else {
+		//blob.position.z = -1
 	}
 
 }
@@ -106,6 +144,7 @@ import { updateBlob } from './geometries'
 function animate() {
 	requestAnimationFrame(animate);
 	updateBlob(blob, value);
+	//updateBlob(leftBlob, value);
 
 	var delta = clock.getDelta();
 	if (mixer) mixer.update(delta);
@@ -117,7 +156,7 @@ function animate() {
 //MOUSE-FOLLOWER SPHERE
 
 function createFollower() {
-	var mouse = {x: 0, y: 0};
+	var mouse = { x: 0, y: 0 };
 	var mouseSphere = new THREE.SphereGeometry(0.4, 60, 60);
 	var mouseObject = new THREE.Mesh(mouseSphere, MAT.default);
 	mouseObject.position.z = 0;
@@ -189,8 +228,8 @@ function createLights() {
 
 import handleText from './textanimations'
 
-const png = new Image();
-png.src = "images/favicon.png"
+
+const png = document.getElementById('bkg')
 
 window.addEventListener('load', (event) => {
 	console.log('page has loaded');

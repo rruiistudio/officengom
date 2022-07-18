@@ -12,7 +12,7 @@ export default function handleText(png) {
 	let mouse = {
 		x: null,
 		y: null,
-		radius: 50
+		radius: 70
 	}
 
 	window.addEventListener('mousemove',
@@ -31,11 +31,11 @@ export default function handleText(png) {
 			constructor(x, y, color, size) {
 				this.x = x + canvas.width /2 - png.width * 2,
 				this.y = y + canvas.height /2 - png.height * 2,
-				this.color = "rgba(4, 4, 4, 0.79)",
+				this.color = "rgba(0, 0, 0, 0.56)",
 				this.size = 0.7,
 				this.baseX = x + canvas.width/2 - png.width * 2,
 				this.baseY = y + canvas.height/2 - png.height * 2,
-				this.density = (Math.random() * 10) + 2;
+				this.density = (Math.random() * 20) + 2;
 			}
 			draw() {
 				ctx.beginPath();
@@ -91,7 +91,7 @@ export default function handleText(png) {
 
 			const everyNth = (arr, nth) => arr.filter((e, i) => i % nth === nth - 1);
 	
-			particleArray = everyNth(particleArray, 3)
+			//particleArray = everyNth(particleArray, 2)
 
 		}
 
@@ -102,7 +102,7 @@ export default function handleText(png) {
 				particleArray[i].update();
 			}
 	
-			//connect();
+			connect();
 			requestAnimationFrame(animate);
 		}
 
@@ -127,7 +127,7 @@ export default function handleText(png) {
 				let distance = Math.sqrt(dx * dx + dy * dy);
 
 				if (distance < 10) {
-					ctx.strokeStyle = 'rgba(0,0,0,0.39)';
+					ctx.strokeStyle = 'rgba(0, 0, 0, 0.56)';
 					ctx.lineWidth = 0.2;
 					ctx.beginPath();
 					ctx.moveTo(particleArray[a].x, particleArray[a].y);

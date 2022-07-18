@@ -34,10 +34,10 @@ export default function addModels(gltfLoader, modelPath, mixer, scene) {
     })
 }
 
-export function createBlobs(object, material, scene) {
-    var sphere_geometry = new THREE.SphereGeometry(50, 30, 30);
+export function createBlobs(object, material, scene, p1, p2, p3, x, y, z) {
+    var sphere_geometry = new THREE.SphereGeometry(x, y, z);
 	object = new THREE.Mesh(sphere_geometry, material);
-    object.position.set(0, 0, -1)
+    object.position.set(p1, p2, p3)
 	console.log(object)
 	scene.add(object)
     return object
@@ -64,4 +64,16 @@ export function updateBlob(object, value){
 
     return object 
 
+}
+
+export function updatecornerBlobs(object, value, k) {
+    
+}
+
+
+
+
+export function triggerBlobs(position){
+    
+	
 }
